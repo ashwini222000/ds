@@ -1,0 +1,101 @@
+import pandas as pd
+import matplotlib.pyplot as plt
+import numpy as np
+import io
+# df = pd.read_csv(io.BytesIO(uploaded['/content/API_SP.POP.TOTL_DS2_en_csv_v2_6298256.csv']))
+# print(df)
+from google.colab import files
+
+
+uploaded = files.upload()
+import pandas as pd
+import io
+
+df = pd.read_csv(io.BytesIO(uploaded['population .csv']))
+print(df)
+print(df)
+df.shape
+df.columns
+df.dtypes
+df.info()
+df.describe()
+df.duplicated().sum()
+df.isna().sum().any()
+df = df.fillna(method = "ffill")
+df.head()
+df.isna().sum().any()
+df['Country Name'].unique()
+df['Country Code'].unique()
+df['Indicator Name'].unique()
+df['Indicator Code'].unique()
+df.drop(['Indicator Name','Indicator Code','Country Code'],axis = 1, inplace = True)
+df.columns
+cols = df.columns
+for i in cols:
+         fig = plt.figure(figsize=(5,5))
+         plt.hist(df[i],color='#B22222',bins=10)
+         plt.xlabel(i)
+         plt.show()
+years = df.columns[1:]
+
+total_values = df[years].sum()
+
+plt.figure(figsize=(30, 30))
+plt.barh(years,total_values,color='#191970')
+plt.xlabel('Total Values')
+plt.ylabel('Year', size=20)
+plt.title('Total Values per Year' , size=20)
+plt.show()
+country_by_1960 = df.sort_values(by='1960').head(20)
+country_by_1960
+import seaborn as sns
+import matplotlib.pyplot as plt
+
+country_by_1960_t = country_by_1960.set_index('Country Name').T
+for country_name, data_values in country_by_1960_t.iterrows():
+    fig = plt.figure(figsize=(10, 5))
+    sns.barplot(x=data_values.index,y=data_values.values)
+    plt.xlabel('Countries')
+    plt.ylabel('Data Values')
+    plt.title(f"{country_name} - Data Values from 1960 to 2022")
+    plt.xticks(rotation=90)
+    plt.show()
+country_by_2022 = df.sort_values(by='2022').head(20)
+country_by_2022
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+country_by_2022_t = country_by_2022.set_index('Country Name').T
+for country_name, data_values in country_by_2022_t.iterrows():
+    fig = plt.figure(figsize=(10, 5))
+    sns.barplot(x=data_values.index, y=data_values.values)
+    plt.xlabel('Year')
+    plt.ylabel('Data value')
+    plt.title(f"{country_name} - Data Values from 1960 to 2022")
+    plt.xticks(rotation=90)
+    plt.show()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
